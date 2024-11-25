@@ -1,0 +1,5 @@
+package com.ticketing.tool.dto;
+
+public class RegisterUserResponse {
+
+}

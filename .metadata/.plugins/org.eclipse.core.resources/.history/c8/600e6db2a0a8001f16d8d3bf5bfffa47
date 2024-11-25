@@ -1,0 +1,18 @@
+package com.ticketing.tool.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ticketing.tool.repository.RoleRepository;
+
+@Service
+public class RoleService {
+
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	public Integer getRoleID(String role) {
+		roleRepository
+		return null;
+	}
+}

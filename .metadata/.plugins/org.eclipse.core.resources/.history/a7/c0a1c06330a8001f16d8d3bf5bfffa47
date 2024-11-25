@@ -1,0 +1,96 @@
+package com.ticketing.tool.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.stereotype.Service;
+
+import com.ticketing.tool.dto.RegisterUserResponse;
+import com.ticketing.tool.dto.UserInfo;
+import com.ticketing.tool.entity.User;
+import com.ticketing.tool.repository.UserRepository;
+
+@Service
+public class AuthenticationService {
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private UserRepository repository;
+
+	@Autowired
+	private JwtService jwtService;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	
+	public RegisterUserResponse register(UserInfo userRequest) {
+		User user = userService.save(userRequest);
+		addressService.save(userRequest.getAddressInfo(), user);
+		userRoleAssignService.save(user.getUserId(), userRequest.getRole());
+		logger.info("User registered successfully");
+		return new RegisterUserResponse("User created successfully");
+	}
+
+	public AuthenticationResponse authenticate(AuthenticationRequest request, String userAgent) {
+		logger.info("Authenticating user: {}", request.getUsername());
+		try {
+			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+					request.getUsername(), request.getPassword());
+			authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+		} catch (BadCredentialsException ex) {
+			logger.error("Authentication failed: {}", ex.getMessage());
+			throw new BadCredentialsException(ex.getMessage());
+		}
+
+		var user = repository.findByUserName(request.getUsername())
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+		if (!request.getUsername().equals(user.getUsername())) {
+			logger.error("User not found");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+		}
+
+		var jwtToken = jwtService.generateToken(user);
+		AuthenticationResponse response = new AuthenticationResponse(jwtToken);
+
+		/* userTokenService.saveKeyValue(user.getUsername(), jwtToken); */
+
+		/* Save token and UserId in the database. */
+
+		/*
+		 * Optional<UserToken> userToken =
+		 * userTokenRepository.findByUserIdAndActive(user.getUserId(), true);
+		 * 
+		 * if (userToken.isPresent()) {
+		 * 
+		 * UserToken userToken2 = userToken.get(); userToken2.setActive(false);
+		 * userToken2.setLastAccessedAt(Timestamp.valueOf(LocalDateTime.now()));
+		 * 
+		 * userTokenRepository.save(userToken2); } UserAgent userAgent2 =
+		 * UserAgent.parseUserAgentString(userAgent); UserToken userTokenNew = new
+		 * UserToken();
+		 * 
+		 * userTokenNew.setUserId(user.getUserId());
+		 * 
+		 * try { userTokenNew.setJwtToken(jwtService.hashWithSHA256(jwtToken));
+		 * 
+		 * } catch (Exception e) { e.printStackTrace(); }
+		 * 
+		 * userTokenNew.setIssuedAt(Timestamp.valueOf(LocalDateTime.now()));
+		 * userTokenNew.setExpiredAt(null);
+		 * userTokenNew.setLastAccessedAt(Timestamp.valueOf(LocalDateTime.now()));
+		 * userTokenNew.setActive(true); userTokenNew.setDeviceInfo("Browser :" +
+		 * userAgent2.getBrowser().getName() + " OperatingSystem : " +
+		 * userAgent2.getOperatingSystem().getName());
+		 * userTokenNew.setLogoutAt(Timestamp.valueOf(LocalDateTime.now()));
+		 * 
+		 * userTokenRepository.save(userTokenNew);
+		 */
+
+		return response;
+
+	}
+
+}

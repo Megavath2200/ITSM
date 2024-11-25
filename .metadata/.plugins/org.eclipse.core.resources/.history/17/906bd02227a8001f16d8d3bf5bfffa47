@@ -1,0 +1,5 @@
+package com.ticketing.tool.configuration;
+
+public class SecurityConfiguration {
+
+}

@@ -1,0 +1,10 @@
+package com.ticketing.tool.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "USER")
+public class Role {
+
+}

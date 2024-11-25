@@ -1,0 +1,10 @@
+package com.ticketing.tool.dto;
+
+import jakarta.persistence.Column;
+
+public class RoleInfo {
+
+	private Integer roleId;
+
+	private String roleName;
+}

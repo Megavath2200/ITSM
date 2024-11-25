@@ -1,0 +1,15 @@
+package com.ticketing.tool.service;
+
+import java.util.List;
+
+import com.ticketing.tool.dto.TicketInfo;
+import com.ticketing.tool.entity.Ticket;
+
+public interface ITicket {
+
+	public Ticket saveTicket(TicketInfo ticketInfo);
+
+	public List<Ticket> getAllTicket();
+
+	public Integer getTicketId();
+}

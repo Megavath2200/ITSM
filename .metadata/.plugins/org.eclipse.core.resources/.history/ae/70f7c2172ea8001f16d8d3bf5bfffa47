@@ -1,0 +1,31 @@
+package com.ticketing.tool.entity;
+
+import java.sql.Timestamp;
+
+import jakarta.persistence.Column;
+
+public class UserInfo {
+
+	private Integer userId;
+
+	private Integer roleId;
+
+	private String firstName;
+
+	private String lastName;
+
+	private String userName;
+
+	private String email;
+
+	private String password;
+
+	private String phone;
+
+	private String companyName;
+
+	private String referance;
+
+	private Boolean active;
+
+}

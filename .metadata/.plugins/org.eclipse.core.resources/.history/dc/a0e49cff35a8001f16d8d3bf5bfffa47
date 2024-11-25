@@ -1,0 +1,61 @@
+package com.ticketing.tool.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.ticketing.tool.dto.AuthenticationRequest;
+import com.ticketing.tool.dto.AuthenticationResponse;
+import com.ticketing.tool.dto.RegisterUserResponse;
+import com.ticketing.tool.dto.UserInfo;
+import com.ticketing.tool.entity.User;
+import com.ticketing.tool.repository.UserRepository;
+
+@Service
+public class AuthenticationService {
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private UserRepository repository;
+
+	@Autowired
+	private JwtService jwtService;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	public RegisterUserResponse register(UserInfo userRequest) {
+		userService.save(userRequest);
+		return new RegisterUserResponse("User created successfully");
+	}
+
+	public AuthenticationResponse authenticate(AuthenticationRequest request) {
+		try {
+			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+					request.getUsername(), request.getPassword());
+			authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+		} catch (BadCredentialsException ex) {
+			throw new BadCredentialsException(ex.getMessage());
+		}
+
+		var user = repository.findByUserName(request.getUsername())
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+		if (!request.getUsername().equals(user.getUsername())) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+		}
+
+		var jwtToken = jwtService.generateToken(user);
+		AuthenticationResponse response = new AuthenticationResponse(jwtToken);
+
+		return response;
+
+	}
+
+}

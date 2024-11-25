@@ -1,0 +1,49 @@
+package com.ticketing.tool.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ticketing.tool.dto.TicketInfo;
+import com.ticketing.tool.entity.Ticket;
+import com.ticketing.tool.repository.TicketRepository;
+
+@Service("ticketService")
+public class TicketService implements ITicket {
+
+	@Autowired
+	private TicketRepository ticketRepository;
+
+	@Override
+	public Ticket saveTicket(TicketInfo ticketInfo) {
+		Ticket ticket = new Ticket();
+		ticket.setTicketId(ticketInfo.getTicketId());
+		ticket.setTicketType(ticketInfo.getTicketType());
+		ticket.setTitle(ticketInfo.getTitle());
+		ticket.setDescription(ticketInfo.getDescription());
+		ticket.setPriority(ticketInfo.getPriority());
+		ticket.setAssignedTo(ticketInfo.getAssignedTo());
+		ticket.setSupportTeam(ticketInfo.getSupportTeam());
+		ticket.setContactType(ticketInfo.getContactType());
+		ticket.setApprover(ticketInfo.getApprover());
+		ticket.setDueDate(ticketInfo.getDueDate());
+		ticket.setCreationDate(ticketInfo.getCreationDate());
+		ticket.setMedia(ticketInfo.getMedia());
+		ticket.setImpact(ticketInfo.getImpact());
+		ticket.setContactInfo(ticketInfo.getContactInfo());
+		ticket.setStatus(ticketInfo.getStatus());
+		ticket.setRaisedDate(ticketInfo.getRaisedDate());
+		ticket.setClosedDate(ticketInfo.getClosedDate());
+		ticket.setResolutionTime(ticketInfo.getResolutionTime());
+		ticket.setResponseTime(ticketInfo.getResponseTime());
+
+		return ticketRepository.save(ticket);
+	}
+
+	@Override
+    public List<Ticket> getAllTicket() {
+        
+    }
+}
