@@ -1557,3 +1557,6 @@ org.apache.maven.project.ProjectBuildingException: Some problems were encountere
 2024-11-24 23:44:20,625 [Worker-245: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
 2024-11-24 23:44:20,632 [Worker-245: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
 2024-11-24 23:44:20,635 [Worker-245: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Smac-X_Workspace_New\Smac-XTicketing\src\test\resources
+2024-11-25 11:16:34,214 [Worker-282: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-11-25 11:16:34,363 [Worker-282: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-11-25 11:16:34,367 [Worker-282: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Smac-X_Workspace_New\Smac-XTicketing\src\test\resources
