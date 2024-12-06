@@ -30,38 +30,20 @@ public class SecurityConfiguration {
 
 				.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests((authorizeHttpRequests) -> {
 					authorizeHttpRequests.requestMatchers("/api/v1/auth/**").permitAll();
-				}).authorizeHttpRequests((authorizeHttpRequests) -> {
-					authorizeHttpRequests
-							.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets", "/api/v1/next-id")
-							.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "USER", "APPROVER",
-									"QUE_MANAGER");
-				}).authorizeHttpRequests((authorizeHttpRequests) -> {
-					authorizeHttpRequests
-							.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets", "/api/v1/next-id")
-							.hasRole("USER");
-				}).authorizeHttpRequests((authorizeHttpRequests) -> {
-					authorizeHttpRequests.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets",
-							"/api/v1/next-id", "/api/v1/approver", "/api/v1/approver/**").hasRole("APPROVER");
-				}).authorizeHttpRequests((authorizeHttpRequests) -> {
-					authorizeHttpRequests.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets",
-							"/api/v1/next-id", "/api/v1/approver", "/api/v1/approver/**").hasRole("ADMIN");
-				}).authorizeHttpRequests((authorizeHttpRequests) -> {
-					authorizeHttpRequests
-							.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets", "/api/v1/next-id")
-							.hasRole("CONSULTANT");
-				}).authorizeHttpRequests((authorizeHttpRequests) -> {
-					authorizeHttpRequests
-							.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets", "/api/v1/next-id")
-							.hasRole("CLIENT_ADMIN");
-				}).authorizeHttpRequests((authorizeHttpRequests) -> {
-					authorizeHttpRequests
-							.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets", "/api/v1/next-id")
-							.hasRole("QUE_MANAGER");
-				}).authorizeHttpRequests((authorizeHttpRequests) -> {
-					authorizeHttpRequests
-							.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets", "/api/v1/next-id")
-							.hasRole("SUPER_ADMIN");
 				})
+
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets", "/api/v1/next-id")
+						.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "APPROVER", "QUE_MANAGER",
+								"USER"))
+
+				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/v1/approver", "/api/v1/approver/**")
+						.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "APPROVER", "QUE_MANAGER"))
+
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers("/api/company/saveCompany", "/api/department/**", "api/company/**",
+								"/api/approver-level/**")
+						.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "QUE_MANAGER"))
 
 				.authorizeHttpRequests((authorizeHttpRequests) -> {
 					authorizeHttpRequests.anyRequest().authenticated();
