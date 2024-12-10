@@ -92,4 +92,14 @@ public class TicketService implements ITicket {
 		return ticketIds.map(ticket -> modelMapper.map(ticket, TicketInfo.class)).orElse(null);
 	}
 
+	@Override
+	public void changeStaus(Integer ticketId, String status) {
+		Optional<Ticket> tickets = ticketRepository.findByTicketId(ticketId);
+		tickets.ifPresent(data -> {
+			Ticket ticket = tickets.get();
+			ticket.setStatus(status);
+			ticketRepository.save(ticket);
+		});
+	}
+
 }

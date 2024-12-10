@@ -1,5 +1,6 @@
 package com.ticketing.tool.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	public Optional<User> findByUserName(final String username);
 
 	public Optional<User> findByUserId(Integer userId);
+
+	public List<User> findByCompanyNameAndRoleId(String companyName, Integer roleId);
+
 }

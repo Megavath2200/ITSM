@@ -16,4 +16,6 @@ public interface ITicket {
 	public List<TicketInfo> getApproverTickets();
 
 	public TicketInfo getApproverTicketId(Integer ticketId);
+
+	public void changeStaus(Integer ticketId, String status);
 }

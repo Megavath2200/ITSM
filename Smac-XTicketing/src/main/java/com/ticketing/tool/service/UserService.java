@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -86,6 +87,13 @@ public class UserService implements UserDetailsService {
 
 	private Integer generateUserId() {
 		return (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
+	}
+
+	public List<String> getUserName(String companyName) {
+		Integer roleID = roleService.getRoleID("APPROVER");
+		List<User> user = userRepository.findByCompanyNameAndRoleId(companyName, roleID);
+		return user.stream().map(User::getUsername).collect(Collectors.toList());
+
 	}
 
 }

@@ -18,4 +18,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 	List<Ticket> findAllTicketsSorted();
 
 	public Optional<Ticket> findByTicketId(Integer ticketId);
+
 }

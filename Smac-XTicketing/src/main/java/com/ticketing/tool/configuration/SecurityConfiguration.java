@@ -33,7 +33,8 @@ public class SecurityConfiguration {
 				})
 
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets", "/api/v1/next-id")
+						.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets", "/api/v1/next-id",
+								"/api/v1/{ticketId}/{status}")
 						.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "APPROVER", "QUE_MANAGER",
 								"USER"))
 
@@ -42,7 +43,7 @@ public class SecurityConfiguration {
 
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/api/company/saveCompany", "/api/department/**", "api/company/**",
-								"/api/approver-level/**")
+								"/api/approver-level/**", "/api/user/**", "/api/status/**")
 						.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "QUE_MANAGER"))
 
 				.authorizeHttpRequests((authorizeHttpRequests) -> {

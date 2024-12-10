@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ticketing.tool.dto.TicketInfo;
 import com.ticketing.tool.entity.Ticket;
 import com.ticketing.tool.service.ITicket;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -101,4 +104,16 @@ public class TicketController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
+	@PutMapping("/{ticketId}/{status}")
+	public ResponseEntity<?> updateTicketStatus(@PathVariable Integer ticketId, @PathVariable String status) {
+
+		try {
+			ticketService.changeStaus(ticketId, status);
+			return ResponseEntity.ok("Ticket status updated successfully.");
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+	}
+
 }
