@@ -32,18 +32,17 @@ public class SecurityConfiguration {
 					authorizeHttpRequests.requestMatchers("/api/v1/auth/**").permitAll();
 				})
 
-				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets", "/api/v1/next-id",
-								"/api/v1/{ticketId}/{status}")
-						.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "APPROVER", "QUE_MANAGER",
-								"USER"))
+				.authorizeHttpRequests(
+						authorize -> authorize.requestMatchers("/api/v1/saveTicket", "/api/v1/getAllTickets",
+								"/api/v1/next-id", "/api/v1/{ticketId}/{status}").hasAnyRole("SUPER_ADMIN",
+										"CLIENT_ADMIN", "ADMIN", "CONSULTANT", "APPROVER", "QUE_MANAGER", "USER"))
 
 				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/v1/approver", "/api/v1/approver/**")
 						.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "APPROVER", "QUE_MANAGER"))
 
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/api/company/saveCompany", "/api/department/**", "api/company/**",
-								"/api/approver-level/**", "/api/user/**", "/api/status/**")
+								"/api/approver-level/**", "/api/user/**", "/api/status/**", "/api/contractType/**")
 						.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "QUE_MANAGER"))
 
 				.authorizeHttpRequests((authorizeHttpRequests) -> {
