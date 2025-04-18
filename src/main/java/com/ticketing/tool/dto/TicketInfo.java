@@ -24,6 +24,28 @@ public class TicketInfo {
 	private Timestamp resolutionTime;
 	private Timestamp responseTime;
 	private Boolean approverCheck;
+	private String createdBy;
+	private String companyName;
+	private String department;
+
+	public String getDepartment() {
+		return department;
+	}
+
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
 
 	public Integer getTicketId() {
 		return ticketId;
@@ -183,6 +205,16 @@ public class TicketInfo {
 
 	public void setApproverCheck(Boolean approverCheck) {
 		this.approverCheck = approverCheck;
+	}
+
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 }

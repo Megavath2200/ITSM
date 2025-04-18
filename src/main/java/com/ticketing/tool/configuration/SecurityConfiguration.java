@@ -43,7 +43,7 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/api/company/saveCompany", "/api/department/**", "api/company/**",
 								"/api/approver-level/**", "/api/user/**", "/api/status/**", "/api/contractType/**")
-						.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "QUE_MANAGER"))
+						.hasAnyRole("SUPER_ADMIN", "CLIENT_ADMIN", "ADMIN", "CONSULTANT", "QUE_MANAGER" , "USER","APPROVER"))
 
 				.authorizeHttpRequests((authorizeHttpRequests) -> {
 					authorizeHttpRequests.anyRequest().authenticated();

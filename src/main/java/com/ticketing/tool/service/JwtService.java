@@ -5,6 +5,7 @@ import java.security.Key;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.ticketing.tool.entity.Role;
 import com.ticketing.tool.entity.User;
+import com.ticketing.tool.repository.RoleRepository;
 import com.ticketing.tool.repository.UserRepository;
 
 import io.jsonwebtoken.Claims;
@@ -41,6 +44,9 @@ public class JwtService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private RoleRepository roleRepository;
 
 	public String extractUsername(String token) {
 
@@ -72,9 +78,9 @@ public class JwtService {
 //			Map<String, Object> userClaims = Map.of("userId", user.getUserId(), "firstName", user.getFirstName(),
 //					"lastName", user.getLastName(), "active", user.getActive(), "roles", userRoles
 //
-//			);
+//			)
 
-			Map<String, Object> userClaims = Map.of("roles", userRoles, "userName", user.getUsername());
+			Map<String, Object> userClaims = Map.of("roles", userRoles, "userName", user.getUsername() , "email" , user.getEmail() , "company" , user.getCompanyName() ,"Department", user.getDepartment() );
 			return generateToken(userClaims, userDetails);
 		}
 
@@ -90,8 +96,34 @@ public class JwtService {
 
 	private Claims extractAllClaims(String token) {
 		return Jwts.parser().verifyWith(getVerifyKey()).build().parseSignedClaims(token).getPayload();
-
 	}
+	
+	public User getUserFromToken(String token) {
+		String jwt = token.replace("Bearer ", "");
+	
+		Claims claims = extractAllClaims(jwt);
+		String email = claims.get("email", String.class); 
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new RuntimeException("User not found"));
+	
+		Role role = roleRepository.findByRoleId(user.getRoleId())
+				.orElseThrow(() -> new RuntimeException("Role not found"));
+	
+		user.setRoleName(role.getRoleName());
+	
+		return user;
+	}
+	
+	
+
+	public String extractEmail(String token) {
+        return extractClaim(token, claims -> claims.get("email", String.class));
+    }
+
+	public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("roles", String.class));
+    }
+
 
 	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
 		final Claims claims = extractAllClaims(token);

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,15 +69,38 @@ public class TicketController {
 		return new ResponseEntity<>(savedTicket, HttpStatus.CREATED);
 	}
 
-	@GetMapping(value = "/getAllTickets", produces = { MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<?> getAllTickets() {
-		List<TicketInfo> tickets = ticketService.getAllTicket();
-		if (tickets.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<>(tickets, HttpStatus.OK);
+	// @GetMapping(value = "/getAllTickets", produces = { MediaType.APPLICATION_JSON_VALUE,
+	// 		MediaType.APPLICATION_XML_VALUE })
+	// public ResponseEntity<?> getAllTickets() {
+	// 	List<TicketInfo> tickets = ticketService.getAllTicket();
+	// 	if (tickets.isEmpty()) {
+	// 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	// 	}
+	// 	return new ResponseEntity<>(tickets, HttpStatus.OK);
+	// }
+
+	@GetMapping(value = "/getAllTickets", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+    public ResponseEntity<?> getAllTickets(@RequestHeader("Authorization") String token) {
+        List<TicketInfo> tickets = ticketService.getAllTicket(token);
+        
+        if (tickets.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        
+        return ResponseEntity.ok(tickets);
+    }
+
+	@GetMapping(value = "/approver", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<?> getApproverTickets(@RequestHeader("Authorization") String token) {
+		List<TicketInfo> ticketInfoList = ticketService.getApproverTickets(token);
+		return ResponseEntity.ok(ticketInfoList);
 	}
+
+	// @GetMapping(value = "/approver", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	// public ResponseEntity<?> getApproverTickets() {
+	// 	List<TicketInfo> ticketInfoList = ticketService.getApproverTickets();
+	// 	return ResponseEntity.ok(ticketInfoList);
+	// }
 
 	@GetMapping(value = "/next-id", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<?> getNextTicketId() {
@@ -84,14 +108,8 @@ public class TicketController {
 			Integer nextTicketId = ticketService.getTicketId();
 			return new ResponseEntity<>(nextTicketId, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>("Id not found", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}
-
-	@GetMapping(value = "/approver", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<?> getApproverTickets() {
-		List<TicketInfo> ticketInfoList = ticketService.getApproverTickets();
-		return ResponseEntity.ok(ticketInfoList);
 	}
 
 	@GetMapping(value = "/approver/{ticketId}", produces = { MediaType.APPLICATION_JSON_VALUE,

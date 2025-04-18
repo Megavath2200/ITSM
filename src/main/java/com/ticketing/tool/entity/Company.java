@@ -3,6 +3,8 @@ package com.ticketing.tool.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,114 +29,256 @@ public class Company implements Serializable {
 	@Column(name = "COMPANY_NAME", nullable = false, length = 100)
 	private String companyName;
 
+	@Column(name = "COMPANY_REGNO", length = 255)
+	private String companyRegNo;
+
+	@Column(name = "INDUSTRY_TPE", length = 255)
+	private String industryType;
+
 	@Column(name = "EMAIL", nullable = false, unique = true)
 	private String email;
 
-	@Column(name = "CONTACT_NUMBER", length = 15)
-	private String contactNumber;
+	@Column(name = "COMPANY_ADDRESS", length = 255)
+	private String companyAddress;
 
-	@Column(name = "INCIDENT_APPROVAL")
-	private Boolean incidentApproval;
+	@Column(name = "CITY", length = 255)
+	private String city;
 
-	@Column(name = "CHANGE_APPROVAL")
-	private Boolean changeApproval;
+	@Column(name = "COUNTRY", length = 255)
+	private String country;
 
-	@Column(name = "COMPANY_LOGO", length = 100)
-	private String companyLogo;
+	@Column(name = "STATE", length = 255)
+    private String state;
 
-	@Column(name = "ADDRESS", length = 255)
-	private String address;
+	@Column(name = "POSTAL_CODE", length = 255)
+    private String postalCode;
 
-	@Column(name = "CONTRACT_DETAILS", length = 255)
-	private String contractDetails;
+	@Column(name = "PRINARY_CONTACT_NAME", length = 255)
+	private String primaryContactName;
+
+	@Column(name = "PRIMARY_CONTACT_EMAIL", length = 255)
+    private String primaryContactEmail;
+
+	@Column(name = "PRIMARY_CONTACT_PHONE", length = 255)
+    private String primaryContactPhone;
+
+	@Column(name = "SECONDARY_CONTACT_NAME", length = 255)
+	private String secondaryContactName;
+
+	@Column(name = "SECONDARY_CONTACT_EMAIL", length = 255)
+    private String secondaryContactEmail;
+
+	@Column(name = "SECONDARY_CONTACT_PHONE", length = 255)
+    private String secondaryContactPhone;
 
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JsonManagedReference
 	private List<Department> departments;
-
-
 	
+
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JsonManagedReference
+	private List<TicketType> ticketTypes;
+
+
+	// @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	// @JsonManagedReference
+	// private List<User> users;
+
+	// @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	// @JsonManagedReference
+	// private List<Ticket> tickets;
+
 	public Long getId() {
 		return id;
 	}
+
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+
 	public String getCompanyName() {
 		return companyName;
 	}
+
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
 
+
+	public String getCompanyRegNo() {
+		return companyRegNo;
+	}
+
+
+	public void setCompanyRegNo(String companyRegNo) {
+		this.companyRegNo = companyRegNo;
+	}
+
+
+	public String getIndustryType() {
+		return industryType;
+	}
+
+
+	public void setIndustryType(String industryType) {
+		this.industryType = industryType;
+	}
+
+
 	public String getEmail() {
 		return email;
 	}
+
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public String getContactNumber() {
-		return contactNumber;
+
+	public String getCompanyAddress() {
+		return companyAddress;
 	}
 
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
+
+	public void setCompanyAddress(String companyAddress) {
+		this.companyAddress = companyAddress;
 	}
 
-	public String getAddress() {
-		return address;
+
+	public String getCity() {
+		return city;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+
+	public void setCity(String city) {
+		this.city = city;
 	}
+
+
+	public String getCountry() {
+		return country;
+	}
+
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+
+	public String getState() {
+		return state;
+	}
+
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+
+
+	public String getPrimaryContactName() {
+		return primaryContactName;
+	}
+
+
+	public void setPrimaryContactName(String primaryContactName) {
+		this.primaryContactName = primaryContactName;
+	}
+
+
+	public String getPrimaryContactEmail() {
+		return primaryContactEmail;
+	}
+
+
+	public void setPrimaryContactEmail(String primaryContactEmail) {
+		this.primaryContactEmail = primaryContactEmail;
+	}
+
+
+	public String getPrimaryContactPhone() {
+		return primaryContactPhone;
+	}
+
+
+	public void setPrimaryContactPhone(String primaryContactPhone) {
+		this.primaryContactPhone = primaryContactPhone;
+	}
+
+
+	public String getSecondaryContactName() {
+		return secondaryContactName;
+	}
+
+
+	public void setSecondaryContactName(String secondaryContactName) {
+		this.secondaryContactName = secondaryContactName;
+	}
+
+
+	public String getSecondaryContactEmail() {
+		return secondaryContactEmail;
+	}
+
+
+	public void setSecondaryContactEmail(String secondaryContactEmail) {
+		this.secondaryContactEmail = secondaryContactEmail;
+	}
+
+
+	public String getSecondaryContactPhone() {
+		return secondaryContactPhone;
+	}
+
+
+	public void setSecondaryContactPhone(String secondaryContactPhone) {
+		this.secondaryContactPhone = secondaryContactPhone;
+	}
+
 
 	public List<Department> getDepartments() {
 		return departments;
 	}
 
+
 	public void setDepartments(List<Department> departments) {
 		this.departments = departments;
 	}
 
-	public Boolean getIncidentApproval() {
-		return incidentApproval;
+
+	public List<TicketType> getTicketTypes() {
+		return ticketTypes;
 	}
 
-	public void setIncidentApproval(Boolean incidentApproval) {
-		this.incidentApproval = incidentApproval;
-	}
 
-	public Boolean getChangeApproval() {
-		return changeApproval;
+	public void setTicketTypes(List<TicketType> ticketTypes) {
+		this.ticketTypes = ticketTypes;
 	}
-
-	public void setChangeApproval(Boolean changeApproval) {
-		this.changeApproval = changeApproval;
-	}
-
-	public String getCompanyLogo() {
-		return companyLogo;
-	}
-
-	public void setCompanyLogo(String companyLogo) {
-		this.companyLogo = companyLogo;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public String getContractDetails() {
-		return contractDetails;
-	}
-
-	public void setContractDetails(String contractDetails) {
-		this.contractDetails = contractDetails;
-	}
-
 }
+
+  
+
+    
+
+  
+
+    // @ElementCollection
+    // private List<String> allowedCategories;
+
+    // @ElementCollection
+    // private List<String> departments;
+
+   

@@ -20,11 +20,32 @@ public class UserInfo {
 
 	private String companyName;
 
+	private String department;
+
 	private String referance;
 
 	private Boolean active;
 
 	private String roleName;
+
+	private Integer approverLevel;
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+
+	public Integer getApproverLevel() {
+		return approverLevel;
+	}
+
+	public void setApproverLevel(Integer approverLevel) {
+		this.approverLevel = approverLevel;
+	}
 
 	public String getRoleName() {
 		return roleName;
@@ -121,5 +142,6 @@ public class UserInfo {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
+
 
 }

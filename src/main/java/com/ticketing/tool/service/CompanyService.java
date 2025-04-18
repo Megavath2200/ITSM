@@ -17,12 +17,27 @@ public class CompanyService implements ICompany {
 	@Autowired
 	private CompanyRepository companyRepository;
 
+	// @Override
+	// @Transactional
+	// public Company saveCompany(Company company) {
+	// 	if (company.getDepartments() != null) {
+	// 		company.getDepartments().forEach(department -> department.setCompany(company));
+	// 	}
+
+	// 	return companyRepository.save(company);
+	// }
+
 	@Override
 	@Transactional
 	public Company saveCompany(Company company) {
-		if (company.getDepartments() != null) {
+		if (company.getDepartments() != null && !company.getDepartments().isEmpty()) {
 			company.getDepartments().forEach(department -> department.setCompany(company));
 		}
+
+		if (company.getTicketTypes() != null && !company.getTicketTypes().isEmpty()) {
+			company.getTicketTypes().forEach(ticketType -> ticketType.setCompany(company));
+		}
+
 		return companyRepository.save(company);
 	}
 
@@ -40,3 +55,6 @@ public class CompanyService implements ICompany {
 	}
 
 }
+
+
+

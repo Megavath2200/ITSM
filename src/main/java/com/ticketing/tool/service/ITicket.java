@@ -9,11 +9,11 @@ public interface ITicket {
 
 	public Ticket saveTicket(TicketInfo ticketInfo);
 
-	public List<TicketInfo> getAllTicket();
+	public List<TicketInfo> getAllTicket(String token);
 
 	public Integer getTicketId();
 
-	public List<TicketInfo> getApproverTickets();
+	public List<TicketInfo> getApproverTickets(String token);
 
 	public TicketInfo getApproverTicketId(Integer ticketId);
 

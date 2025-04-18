@@ -44,6 +44,8 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private EmailService emailService;
 
+
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUserName(username).get();
@@ -82,7 +84,14 @@ public class UserService implements UserDetailsService {
 		User user = new User();
 		user.setUserId(generateUserId());
 		user.setUserName(userInfo.getUserName());
-		user.setPassword(passwordEncoder.encode(userInfo.getPassword()));
+		// String rawPassword = userInfo.getPassword();
+		String rawPassword = "123";
+
+		user.setPassword(passwordEncoder.encode(rawPassword));
+
+		System.err.println(passwordEncoder.encode("123"));
+
+		System.out.println("user password" + rawPassword);
 
 		Integer roleID = roleService.getRoleID(userInfo.getRoleName());
 		if (roleID == null) {
@@ -95,6 +104,7 @@ public class UserService implements UserDetailsService {
 		user.setEmail(userInfo.getEmail());
 		user.setPhone(userInfo.getPhone());
 		user.setCompanyName(userInfo.getCompanyName());
+		user.setDepartment(userInfo.getDepartment());
 		user.setReferance(userInfo.getReferance());
 		user.setActive(true);
 		user.setCreated(new Timestamp(System.currentTimeMillis()));
@@ -102,6 +112,12 @@ public class UserService implements UserDetailsService {
 
 		user.setCreateBy("System");
 		user.setUpdateBy("System");
+
+		if ("APPROVER".equals(userInfo.getRoleName())) {
+			Integer approverRoleId = roleService.getRoleID("APPROVER");
+			int approvalMaxLevel = userRepository.findMaxApproverLevel(userInfo.getCompanyName(), approverRoleId);
+			user.setApproverLevel(approvalMaxLevel + 1);
+		}
 
 		Email email = new Email();
 
@@ -115,6 +131,9 @@ public class UserService implements UserDetailsService {
 				"<img src='cid:companyLogo' alt='Company Logo' style='width: 50%; max-width: 400px; background: none; height: auto; max-height: 250px;'>");
 		body.append("</div>" + "<h1>Congratulations and Welcome to Smac-X Inno Labs.</h1>" + "<p>Dear, ");
 		body.append(userInfo.getFirstName());
+		body.append("</p>");
+		body.append("<p><strong>Username:</strong> " + user.getUserName() + "</p>");
+		body.append("<p><strong>Password:</strong> " + rawPassword + "</p>");
 		body.append("</p>");
 		body.append(
 				"<p>Your registration was successful, and you're now all set to dive into our software's features and capabilities<br>Thank you for joining us.</p>");
@@ -134,6 +153,11 @@ public class UserService implements UserDetailsService {
 
 	}
 
+
+	public List<User> getAllUsers(){
+		return userRepository.findAll();
+	}
+
 	private Integer generateUserId() {
 		return (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
 	}
@@ -144,5 +168,11 @@ public class UserService implements UserDetailsService {
 		return user.stream().map(User::getUsername).collect(Collectors.toList());
 
 	}
+
+	// public User getUserFromToken(String token) {
+    //     String email = jwtService.extractEmail(token);
+    //     String role = jwtService.extractRole(token);
+    //     return new User(email, role);
+    // }
 
 }

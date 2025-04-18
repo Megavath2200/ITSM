@@ -37,7 +37,7 @@ public class AuthenticationService {
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
 		try {
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-					request.getUsername(), request.getPassword());
+			request.getUsername(), request.getPassword());
 			authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 			System.err.println("check");
 		} catch (BadCredentialsException ex) {

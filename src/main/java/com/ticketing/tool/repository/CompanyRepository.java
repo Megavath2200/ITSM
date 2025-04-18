@@ -11,5 +11,9 @@ import com.ticketing.tool.entity.Company;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
 	Optional<Company> getCompanyByCompanyName(String companyName);
-
+	// @Query("SELECT c.id FROM Company c WHERE c.name = :companyName")
+    // List<Long> getCompanyId(@Param("companyName") String companyName);
+ 
 }
+
+

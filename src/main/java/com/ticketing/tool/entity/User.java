@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "USER")
@@ -51,6 +52,10 @@ public class User implements UserDetails {
 	@Column(name = "COMPANYNAME")
 	private String companyName;
 
+	@Column(name = "DEPARTMENT")
+	private String department;
+
+
 	@Column(name = "REFERANCE")
 	private String referance;
 
@@ -68,6 +73,35 @@ public class User implements UserDetails {
 
 	@Column(name = "UPDATEDDATE")
 	private Timestamp updated;
+
+	@Transient // This field is not stored in the DB, just used for convenience
+    private String roleName;
+
+	private Integer approverLevel;
+
+	public Integer getApproverLevel() {
+		return approverLevel;
+	}
+
+	public void setApproverLevel(Integer approverLevel) {
+		this.approverLevel = approverLevel;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
 
 	public Long getId() {
 		return id;
@@ -210,5 +244,6 @@ public class User implements UserDetails {
 	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
+
 
 }

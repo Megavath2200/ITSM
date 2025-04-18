@@ -22,10 +22,18 @@ public class DepartmentContoller implements Serializable {
 	@Autowired
 	private IDepartment departmentService;
 
-	@GetMapping("/deptName")
-	public ResponseEntity<?> getDepartmentName(@RequestParam String companyName) {
-		List<String> departmets = departmentService.getDepartmentName(companyName);
-		return new ResponseEntity<>(departmets, HttpStatus.OK);
-	}
+    @GetMapping("/deptName")
+public ResponseEntity<?> getDepartmentName(@RequestParam String companyName) {
+    try {
+        List<String> departments = departmentService.getDepartmentName(companyName);
+        System.out.println("departments: " + departments);
+        return ResponseEntity.ok(departments);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Error fetching departments: " + e.getMessage());
+    }
+}
+
+
 
 }

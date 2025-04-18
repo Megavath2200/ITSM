@@ -19,4 +19,9 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
 	public Optional<Ticket> findByTicketId(Integer ticketId);
 
+	List<Ticket> findByCreatedBy(String createdBy);
+	List<Ticket> findByCompanyName(String companyName);
+	// List<Ticket> findByCompanyId(Long companyId);
+	List<Ticket> findByCompanyNameAndDepartment(String companyName, String department);
+
 }

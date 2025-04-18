@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 
 import java.sql.Timestamp;
 
+
 @Entity
 @Table(name = "TICKET")
 public class Ticket {
@@ -77,6 +78,55 @@ public class Ticket {
 
 	@Column(name = "APPROVER_CHECK")
 	private Boolean approverCheck;
+
+	@Column(name = "CREATED_BY")
+	private String createdBy;
+
+	@Column(name = "COMPANYNAME")
+	private String companyName;
+
+	@Column(name = "DEPARTMENT")
+	private String department;
+
+
+	// @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	// @JoinColumn(name = "COMPANY_ID", nullable = false)
+	// @JsonBackReference
+	// private Company company;
+
+
+
+	// public Company getCompany() {
+	// 	return company;
+	// }
+
+	// public void setCompany(Company company) {
+	// 	this.company = company;
+	// }
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 
 	public Long getId() {
 		return id;

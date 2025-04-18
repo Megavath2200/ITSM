@@ -2,6 +2,8 @@ package com.ticketing.tool.entity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,6 +37,7 @@ public class Department implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "COMPANY_ID", nullable = false)
+	@JsonBackReference
 	private Company company;
 
 	public Long getId() {
